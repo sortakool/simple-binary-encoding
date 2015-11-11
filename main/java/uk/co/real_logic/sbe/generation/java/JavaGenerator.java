@@ -229,6 +229,10 @@ public class JavaGenerator implements CodeGenerator
         for (int size = tokens.size(); index < size; index++)
         {
             final Token groupToken = tokens.get(index);
+            if (tokens.get(index).signal() == Signal.END_GROUP)
+            {
+                return index;
+            }
             if (groupToken.signal() == Signal.BEGIN_GROUP)
             {
                 final String groupName = decoderName(formatClassName(groupToken.name()));
@@ -264,6 +268,10 @@ public class JavaGenerator implements CodeGenerator
         for (int size = tokens.size(); index < size; index++)
         {
             final Token groupToken = tokens.get(index);
+            if (tokens.get(index).signal() == Signal.END_GROUP)
+            {
+                return index;
+            }
             if (groupToken.signal() == Signal.BEGIN_GROUP)
             {
                 final String groupName = groupToken.name();
@@ -1127,8 +1135,20 @@ public class JavaGenerator implements CodeGenerator
         final List<String> groupClassNames = new ArrayList<>();
         int level = 0;
 
+//        System.out.println("generateAnnotations" +
+//                        "\n\t[className=" + className + "]" +
+//                        "\n\t[tokens=" + tokens + "]" +
+//                        "\n\t[index=" + index + "]" +
+//                        "\n\t[nameMapping=" + nameMapping + "]"
+//        );
+
         for (int size = tokens.size(); index < size; index++)
         {
+//            System.out.println("\t\t[i=" + index + "][signal=" + tokens.get(index).signal() + "]");
+            if (tokens.get(index).signal() == Signal.END_GROUP)
+            {
+                return;
+            }
             if (tokens.get(index).signal() == Signal.BEGIN_GROUP)
             {
                 if (++level == 1)
