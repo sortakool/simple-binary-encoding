@@ -132,6 +132,10 @@ public class CSharpGenerator implements CodeGenerator
     {
         for (int size = tokens.size(); index < size; index++)
         {
+            if (tokens.get(index).signal() == Signal.END_GROUP)
+            {
+                return index;
+            }
             if (tokens.get(index).signal() == Signal.BEGIN_GROUP)
             {
                 final Token groupToken = tokens.get(index);
